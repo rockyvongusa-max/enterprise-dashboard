@@ -31,38 +31,28 @@ const nav = [
 ]
 
 function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(true)
   const location = useLocation()
   return (
-    <aside
-      className={`fixed inset-y-0 left-0 z-30 border-r border-slate-800 bg-slate-900/80 backdrop-blur transition-all ${
-        collapsed ? 'w-[72px]' : 'w-[260px]'
-      }`}
-    >
-      <div className="flex h-14 items-center gap-2 px-3">
-        {!collapsed && (
-          <span className="text-base font-semibold tracking-tight text-slate-100">Enterprise</span>
-        )}
+    <aside className={`sidebar-container ${collapsed ? 'collapsed' : 'expanded'}`}>
+      <div className="sidebar-header">
+        {!collapsed && <span className="logo">Enterprise</span>}
         <button
-          className="ml-auto inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-700 text-slate-300 hover:bg-slate-800"
+          className="sidebar-toggle"
           onClick={() => setCollapsed((c) => !c)}
           aria-label="Toggle sidebar"
         >
           {collapsed ? <PanelLeftOpen size={16} /> : <PanelLeftClose size={16} />}
         </button>
       </div>
-      <nav className="space-y-1 px-2">
+      <nav className="sidebar-nav">
         {nav.map((item) => {
           const active = location.pathname === item.to
           return (
             <Link
               key={item.to}
               to={item.to}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
-                active
-                  ? 'bg-slate-800 text-slate-100'
-                  : 'text-slate-300 hover:bg-slate-800/60 hover:text-slate-100'
-              }`}
+              className={`sidebar-link ${active ? 'active' : ''}`}
             >
               <item.Icon size={18} />
               {!collapsed && <span>{item.label}</span>}
@@ -76,36 +66,19 @@ function Sidebar() {
 
 function Topbar() {
   return (
-    <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-slate-800 bg-slate-950/70 px-4 backdrop-blur">
-      <div className="flex items-center gap-3">
-        <button className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-700 text-slate-300 hover:bg-slate-800 lg:hidden">
-          <Menu size={16} />
-        </button>
-        <div className="hidden md:flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900 px-2.5 py-1.5 text-sm text-slate-300">
-          <Filter size={16} />
-          <span className="text-xs">Segments</span>
-          <ChevronDown size={14} />
-        </div>
-        <div className="hidden md:flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900 px-2.5 py-1.5 text-sm text-slate-300">
-          <CalendarRange size={16} />
-          <span className="text-xs">Last 30 days</span>
-          <ChevronDown size={14} />
+    <header className="topbar">
+      <div className="topbar-left">
+        <button className="icon-btn lg-only"><Menu size={16} /></button>
+        <div className="topbar-filters">
+          <div className="chip"><Filter size={14} /><span>Segments</span><ChevronDown size={12} /></div>
+          <div className="chip"><CalendarRange size={14} /><span>Last 30 days</span><ChevronDown size={12} /></div>
         </div>
       </div>
-      <div className="flex items-center gap-2">
-        <button className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-700 text-slate-300 hover:bg-slate-800">
-          <Search size={16} />
-        </button>
-        <button className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-700 text-slate-300 hover:bg-slate-800">
-          <Bell size={16} />
-        </button>
-        <button className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-700 text-slate-300 hover:bg-slate-800">
-          <Settings size={16} />
-        </button>
-        <button className="inline-flex h-8 items-center justify-center rounded-md border border-slate-700 px-2 text-slate-300 hover:bg-slate-800">
-          <UserCircle2 size={18} className="mr-2" />
-          <span className="hidden md:inline text-sm">Admin</span>
-        </button>
+      <div className="topbar-right">
+        <button className="icon-btn"><Search size={16} /></button>
+        <button className="icon-btn"><Bell size={16} /></button>
+        <button className="icon-btn"><Settings size={16} /></button>
+        <button className="user-chip"><UserCircle2 size={18} /><span className="hide-sm">Admin</span></button>
       </div>
     </header>
   )
@@ -115,17 +88,14 @@ export default function App() {
   const location = useLocation()
   const page = nav.find((n) => n.to === location.pathname)?.label ?? 'Overview'
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="app">
       <Sidebar />
-      <div className="transition-all ml-[260px]">
+      <div className={`main ${location.pathname !== '/' ? 'shifted' : ''}`}>
         <Topbar />
-        <main className="p-4 md:p-6">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-            <h1 className="text-lg font-semibold text-slate-100">{page}</h1>
-            <button className="inline-flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-200 hover:bg-slate-800">
-              <Download size={16} />
-              <span>Export</span>
-            </button>
+        <main className="content">
+          <div className="page-header">
+            <h1 className="page-title">{page}</h1>
+            <button className="primary-btn"><Download size={14} /><span>Export</span></button>
           </div>
           <Routes>
             <Route path="/" element={<Overview />} />
