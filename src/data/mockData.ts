@@ -1,4 +1,4 @@
-import { KPIData, ChartDataPoint, Transaction } from '../types'
+import type { KPIData, ChartDataPoint, Transaction } from '../types'
 
 export const generateMockKPIs = (): KPIData[] => {
   return [

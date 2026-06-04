@@ -1,18 +1,10 @@
-import { useState } from 'react'
 import {
-  TrendingUp,
-  Users,
-  ShoppingCart,
-  Percent,
   ArrowUpRight,
   ArrowDownRight,
-  Sparkline,
 } from 'lucide-react'
 import {
   AreaChart,
   Area,
-  BarChart,
-  Bar,
   PieChart,
   Pie,
   Cell,
@@ -62,7 +54,7 @@ export default function Overview() {
               </div>
               <div className="chart-sparkline mt-2 h-10 w-full">
                 <ResponsiveContainer width="100%" height={40}>
-                  <AreaChart data={kpi.sparkline.map((value, index) => ({ value }))}>
+                  <AreaChart data={kpi.sparkline.map((value) => ({ value }))}>
                     <defs>
                       <linearGradient id={`grad-${kpi.id}`} x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />

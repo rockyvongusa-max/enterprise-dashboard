@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, Outlet, useLocation, Routes, Route } from 'react-router-dom'
+import { Link, useLocation, Routes, Route } from 'react-router-dom'
 import {
   LayoutDashboard,
   TrendingUp,
@@ -74,7 +74,7 @@ function Sidebar() {
   )
 }
 
-function Topbar(page: string) {
+function Topbar() {
   return (
     <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-slate-800 bg-slate-950/70 px-4 backdrop-blur">
       <div className="flex items-center gap-3">
@@ -118,7 +118,7 @@ export default function App() {
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <Sidebar />
       <div className="transition-all ml-[260px]">
-        <Topbar page={page} />
+        <Topbar />
         <main className="p-4 md:p-6">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
             <h1 className="text-lg font-semibold text-slate-100">{page}</h1>
